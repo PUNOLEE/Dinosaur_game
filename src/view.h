@@ -9,21 +9,20 @@
 #include <string>
 using namespace ge211;
 
-
-
-class View{
-public:
-    explicit View(Model const&);
+class View
+{
+  public:
+    explicit View(Model const &);
 
     /// Renders the current state of the model.
-    void draw(Sprite_set&, bool) const;
+    void draw(Sprite_set &, bool) const;
 
     /// The actual screen dimensions of the required game window.
     Dimensions screen_dimensions() const;
 
-private:
+  private:
     /// The model.
-    Model const& model_;
+    Model const &model_;
 
     string path_ = "../../../../resource/";
 
@@ -31,20 +30,19 @@ private:
     // dino:
     Image_sprite const dino{path_ + "1x-trex-1.png"};
     // cloud:
-    Image_sprite const cloud{path_ +"1x-cloud.png"};
+    Image_sprite const cloud{path_ + "1x-cloud.png"};
     // flying obstacle:
     //Image_sprite const fob{path_ +"flying.png"};
     // tree obstacle:
-    Image_sprite const one_ob{path_ +"1x-one-ob.png"};
-    Image_sprite const two_ob{path_ +"1x-two-ob.png"};
-    Image_sprite const three_ob{path_ +"1x-three-ob.png"};
+    Image_sprite const one_ob{path_ + "1x-one-ob.png"};
+    Image_sprite const two_ob{path_ + "1x-two-ob.png"};
+    Image_sprite const three_ob{path_ + "1x-three-ob.png"};
     // coin:
-    Image_sprite const coin{path_ +"coin.png"};
+    Image_sprite const coin{path_ + "coin.png"};
     // text:
-    Image_sprite const text_game_over{path_ +"1x-go.png"};
+    Image_sprite const text_game_over{path_ + "1x-go.png"};
     // ground:
-    Image_sprite const ground{path_ +"1x-horizon.png"};
+    Image_sprite const ground{path_ + "1x-horizon.png"};
     // start over:
-    Image_sprite const startover{path_ +"1x-restart-1.png"};
-
+    Image_sprite const startover{path_ + "1x-restart-1.png"};
 };
