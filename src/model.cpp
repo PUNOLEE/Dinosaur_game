@@ -7,7 +7,7 @@
 using namespace ge211;
 
 Model::Model(Position pos)
-    : dino_(pos), coin_num_(0), running_distance_(0)
+    : dino_(pos), coin_num_(0), running_distance_(0), running_time_(0)
 {
 }
 
@@ -86,7 +86,7 @@ void Model::start_running()
     coin_num_ = 0;
     running_time_ = 0;
     running_distance_ = 0;
-    setSpeed(4.0);
+    setSpeed(3.0);
 }
 
 void Model::start_over()
@@ -97,7 +97,8 @@ void Model::start_over()
     hitted = false;
     started = true;
     is_game_over = false;
-    setSpeed(4.0);
+    is_start_over = true;
+    setSpeed(3.0);
 }
 
 void Model::update(double last_frame_seconds)
@@ -105,14 +106,18 @@ void Model::update(double last_frame_seconds)
 
     double deltatime = last_frame_seconds * 1000;
 
-    dur_ += Duration(last_frame_seconds);
-
     running_time_ += deltatime;
 
     if (started)
     {
 
-        dino_.x += lround(deltatime / 5);
+        if (dino_.x >= WIDTH - 47)
+            game_over();
+
+        if (jumping)
+            dino_.x += lround((4.2 * 60 / 1000) * deltatime);
+        else
+            dino_.x += lround((speed_ * 12 / 1000) * deltatime);
 
         updateObstacles(deltatime);
     }
@@ -155,7 +160,24 @@ unsigned int Model::getRandomNumber(unsigned int min, unsigned int max)
 unsigned int Model::getGap(unsigned int size)
 {
 
-    auto minGap = lround(TREE_WIDTH * size * speed_ + (120 + 10 * size) * gap_coefficient_);
+    int minGap_i;
+
+    switch (size)
+    {
+    case 1:
+        minGap_i = 150;
+        break;
+    case 2:
+        minGap_i = 150;
+        break;
+    case 3:
+        minGap_i = 170;
+        break;
+    default:
+        break;
+    }
+
+    auto minGap = lround(TREE_WIDTH * size * speed_ + minGap_i * gap_coefficient_);
 
     auto maxGap = lround(minGap * MAX_GAP_COEFFICIENT);
 
@@ -176,8 +198,8 @@ void Model::anim_ground_obs_per_frame(double deltatime)
     for (auto itr = ground_obstacles_.begin(); itr != ground_obstacles_.end(); ++itr)
     {
 
-        itr->pos.x -= lround((speed_ * FPS / 1000) * deltatime);
-        if (itr->pos.x <= 0)
+        itr->pos.x -= lround((60 * 5.2 / 1000) * deltatime);
+        if (itr != ground_obstacles_.end() && itr->pos.x <= 0)
             ground_obstacles_.erase(itr);
     }
 }
@@ -192,6 +214,7 @@ void Model::setSpeedDrop(bool b)
 void Model::game_over()
 {
     is_game_over = true;
+    is_start_over = false;
     cleanVectors();
     started = false;
     reset();
@@ -267,7 +290,7 @@ bool Model::boxcompare_(vector<int> dinobox, vector<int> obbox) const
     int obwi = obbox.at(2);
     int obhe = obbox.at(3);
 
-    if (dinox < obx + obwi - 2 && dinox + dinowi - 2 > obx && dinoy < oby + obhe - 2)
+    if (dinox < obx + obwi - 10 && dinox + dinowi - 10 > obx && dinoy < oby + obhe - 10)
     {
         crashed = true;
     }
@@ -303,7 +326,7 @@ void Model::increaseAll(double last_frame_seconds)
     running_distance_ += speed_ * deltatime / msP;
 
     if (speed_ < MAX_SPEED)
-        speed_ += ACCELERATION;
+        setSpeed(speed_ + ACCELERATION);
 }
 
 void Model::set_hitted(bool b)

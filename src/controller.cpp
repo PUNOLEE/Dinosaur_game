@@ -88,6 +88,13 @@ void Controller::on_start()
 void Controller::on_frame(double last_frame_seconds)
 {
 
+    if (model_.is_start_over)
+    {
+        model_.is_start_over = false;
+    }
+
+    dur_ += last_frame_seconds;
+
     if (model_.is_started())
     {
 

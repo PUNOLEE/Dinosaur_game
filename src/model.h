@@ -75,15 +75,21 @@ class Model
 
     bool is_game_over;
 
+    bool is_start_over;
+
     void set_hitted(bool);
 
     bool boxcompare(vector<int>, vector<int>) const;
 
     double get_speed() const { return speed_; }
 
+    double running_dis() const { return running_distance_; };
+
+    double running_time() const { return running_time_; };
+
   private:
     //dimension width
-    int WIDTH = 600;
+    int WIDTH = 800;
 
     int TREE_WIDTH = 25;
 
@@ -98,17 +104,17 @@ class Model
     ///game speed for now
     double speed_;
 
-    double gap_coefficient_ = 0.6;
+    double gap_coefficient_ = 1.2;
 
     double MAX_SPEED = 13.0;
 
     unsigned int MAX_OBSTACLE_LENGTH = 3;
 
-    double INIITAL_JUMP_VELOCITY = -10.0;
+    double INIITAL_JUMP_VELOCITY = -12.0;
 
     double DROP_VELOCITY_ = -3.0;
 
-    double SPEED_DROP_COEFFICIENT = 10.0;
+    double SPEED_DROP_COEFFICIENT = 12.0;
 
     double GRAVITY = 1;
 
@@ -119,10 +125,8 @@ class Model
     ///jump velocity
     double jump_velocity_;
 
-    int MIN_JUMP_HEIGHT = 50;
-    int MAX_JUMP_HEIGHT = 50;
-
-    Duration dur_;
+    int MIN_JUMP_HEIGHT = 55;
+    int MAX_JUMP_HEIGHT = 55;
 
     /// ms
     double running_time_;

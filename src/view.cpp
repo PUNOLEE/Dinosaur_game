@@ -17,8 +17,18 @@ Dimensions View::screen_dimensions() const
     return {800, 200};
 }
 
-void View::draw(Sprite_set &sprites, bool onkeydown_) const
+void View::draw(Sprite_set &sprites, bool onkeydown_)
 {
+
+    rtsprite.reconfigure(Text_sprite::Builder(sans_).color(Color::medium_red())
+                         << lround(model_.running_time()) << "ms");
+
+    rdsprite.reconfigure(Text_sprite::Builder(sans_).color(Color::medium_red())
+                         << lround(model_.running_dis()) << "m");
+
+    sprites.add_sprite(rtsprite, {10, 10});
+
+    sprites.add_sprite(rdsprite, {700, 10});
 
     sprites.add_sprite(ground, Position(0, 188));
 
@@ -31,7 +41,7 @@ void View::draw(Sprite_set &sprites, bool onkeydown_) const
 
     if (!model_.ground_obstacles().empty())
     {
-        for (auto itr : model_.ground_obstacles())
+        for (auto const &itr : model_.ground_obstacles())
         {
 
             switch (itr.tree_size_)
