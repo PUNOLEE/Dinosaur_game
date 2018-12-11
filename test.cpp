@@ -96,14 +96,22 @@ TEST_CASE("Increase the score")
     dinogame.set_dino_pos(125, 80);
     tree_obstacles_ to = tree_obstacles_({100, 25}, 3, 400, true);
     dinogame.increaseCoin(to);
+    CHECK_FALSE(to.hascoin_);
     CHECK(dinogame.coin_num() == 1);
     dinogame.set_dino_pos(100, 80);
     tree_obstacles_ to2 = tree_obstacles_({100, 25}, 1, 400, true);
     dinogame.increaseCoin(to2);
+    CHECK_FALSE(to2.hascoin_);
     CHECK(dinogame.coin_num() == 2);
     dinogame.set_dino_pos(115, 80);
     tree_obstacles_ to3 = tree_obstacles_({100, 25}, 2, 400, true);
     dinogame.increaseCoin(to3);
+    CHECK_FALSE(to3.hascoin_);
+    CHECK(dinogame.coin_num() == 3);
+    dinogame.set_dino_pos(135, 80);
+    tree_obstacles_ to4 = tree_obstacles_({100, 25}, 2, 400, true);
+    dinogame.increaseCoin(to4);
+    CHECK(to4.hascoin_);
     CHECK(dinogame.coin_num() == 3);
 }
 
