@@ -93,7 +93,7 @@ class Model
 
     ///Compare the dinosaur 's position and current obstacle' s position
     /// **PRECONDITIONS**:
-    /// -- Two vectors should not be empty; /// Com
+    /// -- Two vectors should not be empty;
     bool boxcompare(vector<int>, vector<int>) const;
 
     double running_dis() const { return running_distance_; };
