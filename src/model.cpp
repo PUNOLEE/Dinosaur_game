@@ -83,7 +83,6 @@ void Model::start_running()
     is_game_over = false;
     started = true;
     jumping = false;
-    coin_num_ = 0;
     running_time_ = 0;
     running_distance_ = 0;
     setSpeed(3.0);
@@ -114,10 +113,10 @@ void Model::update(double last_frame_seconds)
         if (dino_.x >= WIDTH - 47)
             game_over();
 
-        if (jumping)
-            dino_.x += lround((4.2 * 60 / 1000) * deltatime);
-        else
-            dino_.x += lround((speed_ * 12 / 1000) * deltatime);
+        dino_.x += lround((speed_ * 12 / 1000) * deltatime);
+
+        if (checkForCollision())
+            game_over();
 
         updateObstacles(deltatime);
     }
@@ -149,7 +148,22 @@ void Model::updateObstacles(double deltatime)
         addNewTreeObstacle();
     }
 
+    if (!flying_obstacles_.empty())
+    {
+        auto lastone = flying_obstacles_.at(flying_obstacles_.size() - 1);
+        if ((lastone.x + 30 + getRandomNumber(500, 600)) < WIDTH)
+        {
+            addNewFlyingObs();
+        }
+    }
+    else
+    {
+        addNewFlyingObs();
+    }
+
     anim_ground_obs_per_frame(deltatime);
+
+    anim_flying_obs_per_frame(deltatime);
 }
 
 unsigned int Model::getRandomNumber(unsigned int min, unsigned int max)
@@ -184,23 +198,27 @@ unsigned int Model::getGap(unsigned int size)
     return getRandomNumber(minGap, maxGap);
 }
 
-//void Model::add_new_coins_() {
-//    unsigned int co = getRandomNumber(0,1);
-//    Position pos(WIDTH-10,80);
-//    if (co==1)
-//        coins_.push_back(pos);
-//
-//}
+bool Model::has_coin_()
+{
+    unsigned int co = getRandomNumber(0, 1);
+    return co == 1;
+}
 
 void Model::anim_ground_obs_per_frame(double deltatime)
 {
 
-    for (auto itr = ground_obstacles_.begin(); itr != ground_obstacles_.end(); ++itr)
+    for (auto &itr : ground_obstacles_)
     {
+        itr.pos.x -= lround((speed_ * FPS / 1000) * deltatime);
+    }
+}
 
-        itr->pos.x -= lround((60 * 5.2 / 1000) * deltatime);
-        if (itr != ground_obstacles_.end() && itr->pos.x <= 0)
-            ground_obstacles_.erase(itr);
+void Model::anim_flying_obs_per_frame(double deltatime)
+{
+
+    for (auto &itr : flying_obstacles_)
+    {
+        itr.x -= lround((1.6 * speed_ * FPS / 1000) * deltatime);
     }
 }
 
@@ -233,14 +251,36 @@ void Model::addNewTreeObstacle()
     unsigned int gap = getGap(size);
 
     Position pos(xPos, 25);
-    tree_obstacles_ to = tree_obstacles_(pos, size, gap);
+    tree_obstacles_ to = tree_obstacles_(pos, size, gap, has_coin_());
     ground_obstacles_.push_back(to);
 }
 
-bool Model::checkForCollision() const
+void Model::addNewFlyingObs()
+{
+
+    Position pos(WIDTH - 30, 80);
+
+    flying_obstacles_.push_back(pos);
+}
+
+bool Model::checkForCollision()
 {
     bool crashed = false;
     vector<int> dinobox = {dino_.x, dino_.y, 44, 47};
+
+    for (auto f_ob : flying_obstacles_)
+    {
+        if (dino_.y == 80)
+        {
+            if (dino_.x == f_ob.x)
+            {
+                crashed = true;
+            }
+        }
+
+        if (crashed)
+            return crashed;
+    }
 
     for (auto g_ob : ground_obstacles_)
     {
@@ -251,8 +291,13 @@ bool Model::checkForCollision() const
             50};
 
         crashed = boxcompare_(dinobox, obstaclebox);
+
         if (crashed)
             break;
+        else if (is_hit_coin_(g_ob))
+        {
+            coin_num_++;
+        }
     }
     return crashed;
 }
@@ -290,11 +335,31 @@ bool Model::boxcompare_(vector<int> dinobox, vector<int> obbox) const
     int obwi = obbox.at(2);
     int obhe = obbox.at(3);
 
-    if (dinox < obx + obwi - 10 && dinox + dinowi - 10 > obx && dinoy < oby + obhe - 10)
+    if (dinox < obx + obwi - 15 && dinox + 25 > obx && dinoy < oby + 25)
     {
         crashed = true;
     }
     return crashed;
+}
+
+bool Model::is_hit_coin_(tree_obstacles_ ob) const
+{
+    int gap = 0;
+    switch (ob.tree_size_)
+    {
+    case 1:
+        gap = 0;
+        break;
+    case 2:
+        gap = 15;
+        break;
+    case 3:
+        gap = 25;
+        break;
+    default:
+        break;
+    }
+    return ob.hascoin_ && dino_.x == ob.pos.x + gap;
 }
 
 bool Model::is_started() const
@@ -305,7 +370,6 @@ bool Model::is_started() const
 void Model::cleanVectors()
 {
     ground_obstacles_.clear();
-    coins_.clear();
     flying_obstacles_.clear();
 }
 

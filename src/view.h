@@ -34,7 +34,7 @@ private:
   // cloud:
   Image_sprite const cloud{path_ + "1x-cloud.png"};
   // flying obstacle:
-  //Image_sprite const fob{path_ +"flying.png"};
+  Image_sprite const fob{path_ + "flying.png"};
   // tree obstacle:
   Image_sprite const one_ob{path_ + "1x-one-ob.png"};
   Image_sprite const two_ob{path_ + "1x-two-ob.png"};

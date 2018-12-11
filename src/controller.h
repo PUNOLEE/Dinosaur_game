@@ -13,25 +13,25 @@ using namespace ge211;
 
 class Controller : public Abstract_game
 {
-  public:
-    explicit Controller(Position pos = {0, 24});
+public:
+  explicit Controller(Position pos = {0, 24});
 
-  protected:
-    Dimensions initial_window_dimensions() const override;
-    string initial_window_title() const override;
-    void on_key_down(Key) override;
-    void on_key_up(Key) override;
-    void on_frame(double) override;
+protected:
+  Dimensions initial_window_dimensions() const override;
+  string initial_window_title() const override;
+  void on_key_down(Key) override;
+  void on_key_up(Key) override;
+  void on_frame(double) override;
 
-    void draw(Sprite_set &) override;
+  void draw(Sprite_set &) override;
 
-    void on_start() override;
+  void on_start() override;
 
-  private:
-    Model model_;
-    View view_;
+private:
+  Model model_;
+  View view_;
 
-    double dur_;
+  double dur_;
 
-    bool onkeydown_;
+  bool onkeydown_;
 };

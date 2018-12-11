@@ -15,8 +15,9 @@ struct tree_obstacles_
     Position pos;
     unsigned int tree_size_;
     unsigned int gap_;
-    tree_obstacles_(Position pos, unsigned int size, unsigned int gap)
-        : pos(pos), tree_size_(size), gap_(gap) {}
+    bool hascoin_;
+    tree_obstacles_(Position pos, unsigned int size, unsigned int gap, bool hascoin)
+        : pos(pos), tree_size_(size), gap_(gap), hascoin_(hascoin) {}
 };
 
 class Model
@@ -49,7 +50,7 @@ class Model
 
     void setSpeedDrop(bool);
 
-    bool checkForCollision() const;
+    bool checkForCollision();
 
     void increaseAll(double);
 
@@ -61,11 +62,6 @@ class Model
     vector<Position> flying_obstacles() const
     {
         return flying_obstacles_;
-    };
-
-    vector<Position> coins() const
-    {
-        return coins_;
     };
 
     Position dino() const
@@ -87,6 +83,8 @@ class Model
 
     double running_time() const { return running_time_; };
 
+    int coin_num() const { return coin_num_; };
+
   private:
     //dimension width
     int WIDTH = 800;
@@ -96,7 +94,7 @@ class Model
     int FPS = 60;
 
     ///the number of coins dinosaur got
-    size_t coin_num_;
+    int coin_num_;
 
     //the running distance dinosaur reached
     double running_distance_;
@@ -118,7 +116,7 @@ class Model
 
     double GRAVITY = 1;
 
-    double ACCELERATION = 0.001;
+    double ACCELERATION = 0.0006;
 
     double MAX_GAP_COEFFICIENT = 1.5;
 
@@ -126,7 +124,7 @@ class Model
     double jump_velocity_;
 
     int MIN_JUMP_HEIGHT = 55;
-    int MAX_JUMP_HEIGHT = 55;
+    int MAX_JUMP_HEIGHT = 60;
 
     /// ms
     double running_time_;
@@ -139,24 +137,24 @@ class Model
 
     /// The obstacles' position:
     vector<tree_obstacles_> ground_obstacles_;
+
     vector<Position> flying_obstacles_;
 
     /// The dinosaur's position:
     Position dino_;
 
-    /// The coins' position:
-    vector<Position> coins_;
-
     unsigned int getRandomNumber(unsigned int, unsigned int);
 
     void updateObstacles(double);
 
-    /// generate obstacles according to current speed;
+    /// generate obstacles
     void addNewTreeObstacle();
+
+    void addNewFlyingObs();
 
     unsigned int getGap(unsigned int);
 
-    void add_new_coins_();
+    bool has_coin_();
 
     bool boxcompare_(vector<int>, vector<int>) const;
 
@@ -164,14 +162,9 @@ class Model
 
     void anim_ground_obs_per_frame(double);
 
-    ///generate dinosaur pos when it start a jump
-    /// near the top and come back down
+    void anim_flying_obs_per_frame(double);
 
-    void anim_flyingobs_();
-
-    bool hit_flyingob() const;
-
-    bool hit_coin() const;
+    bool is_hit_coin_(tree_obstacles_) const;
 
     void reset();
 

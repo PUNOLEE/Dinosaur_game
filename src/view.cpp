@@ -26,7 +26,12 @@ void View::draw(Sprite_set &sprites, bool onkeydown_)
     rdsprite.reconfigure(Text_sprite::Builder(sans_).color(Color::medium_red())
                          << lround(model_.running_dis()) << "m");
 
+    cnsprite.reconfigure(Text_sprite::Builder(sans_).color(Color::medium_red())
+                         << lround(model_.coin_num()));
+
     sprites.add_sprite(rtsprite, {10, 10});
+
+    sprites.add_sprite(cnsprite, {355, 10});
 
     sprites.add_sprite(rdsprite, {700, 10});
 
@@ -44,19 +49,39 @@ void View::draw(Sprite_set &sprites, bool onkeydown_)
         for (auto const &itr : model_.ground_obstacles())
         {
 
-            switch (itr.tree_size_)
+            if (itr.pos.x >= 0)
             {
-            case 1:
-                sprites.add_sprite(one_ob, {itr.pos.x, 146});
-                break;
-            case 2:
-                sprites.add_sprite(two_ob, {itr.pos.x, 146});
-                break;
-            case 3:
-                sprites.add_sprite(three_ob, {itr.pos.x, 146});
-                break;
-            default:
-                break;
+                switch (itr.tree_size_)
+                {
+                case 1:
+                    if (itr.hascoin_)
+                        sprites.add_sprite(coin, {itr.pos.x, 90});
+                    sprites.add_sprite(one_ob, {itr.pos.x, 146});
+                    break;
+                case 2:
+                    if (itr.hascoin_)
+                        sprites.add_sprite(coin, {itr.pos.x + 15, 90});
+                    sprites.add_sprite(two_ob, {itr.pos.x, 146});
+                    break;
+                case 3:
+                    if (itr.hascoin_)
+                        sprites.add_sprite(coin, {itr.pos.x + 25, 90});
+                    sprites.add_sprite(three_ob, {itr.pos.x, 146});
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+
+    if (!model_.flying_obstacles().empty())
+    {
+        for (auto const &itr : model_.flying_obstacles())
+        {
+            if (itr.x >= 0)
+            {
+                sprites.add_sprite(fob, {itr.x, 30});
             }
         }
     }
