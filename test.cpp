@@ -16,6 +16,39 @@ TEST_CASE("Example test")
     CHECK(dinogame.coin_num() == 0);
 }
 
+TEST_CASE("Running")
+{
+    Model dinogame;
+    dinogame.start_running();
+    CHECK(dinogame.speed() == 3.0);
+    dinogame.update(0.001);
+    CHECK(dinogame.running_time() == 1.0);
+    CHECK(dinogame.is_started());
+    CHECK(dinogame.dino().x == 0);
+    CHECK_FALSE(dinogame.ground_obstacles().empty());
+    CHECK_FALSE(dinogame.flying_obstacles().empty());
+    dinogame.increaseAll(0.001);
+    CHECK(dinogame.running_dis() > 0);
+    CHECK(dinogame.speed() == 3.0006);
+}
+
+TEST_CASE("Jumping")
+{
+    Model dinogame;
+    dinogame.start_running();
+    dinogame.jump();
+    CHECK(dinogame.is_jumping());
+    dinogame.updateJump(0.001);
+    CHECK(dinogame.dino().y == 25);
+    dinogame.updateJump(0.001);
+    CHECK(dinogame.dino().y == 26);
+    dinogame.updateJump(0.001);
+    CHECK(dinogame.dino().y == 27);
+    dinogame.updateJump(0.08);
+    CHECK(dinogame.jump_velocity() == -3.0);
+    CHECK(dinogame.is_jumping());
+}
+
 TEST_CASE("crashed or not")
 {
     Model dinogame;
@@ -55,4 +88,34 @@ TEST_CASE("Hit coin")
     dinogame.set_dino_pos(125, 80);
     tree_obstacles_ to = tree_obstacles_({100, 25}, 3, 400, true);
     CHECK(dinogame.is_hit_coin(to));
+}
+
+TEST_CASE("Increase the score")
+{
+    Model dinogame;
+    dinogame.set_dino_pos(125, 80);
+    tree_obstacles_ to = tree_obstacles_({100, 25}, 3, 400, true);
+    dinogame.increaseCoin(to);
+    CHECK(dinogame.coin_num() == 1);
+    dinogame.set_dino_pos(100, 80);
+    tree_obstacles_ to2 = tree_obstacles_({100, 25}, 1, 400, true);
+    dinogame.increaseCoin(to2);
+    CHECK(dinogame.coin_num() == 2);
+    dinogame.set_dino_pos(115, 80);
+    tree_obstacles_ to3 = tree_obstacles_({100, 25}, 2, 400, true);
+    dinogame.increaseCoin(to3);
+    CHECK(dinogame.coin_num() == 3);
+}
+
+TEST_CASE("Game over")
+{
+    Model dinogame;
+    dinogame.game_over();
+    CHECK(dinogame.is_game_over);
+    CHECK_FALSE(dinogame.is_start_over);
+    CHECK(dinogame.ground_obstacles().empty());
+    CHECK(dinogame.flying_obstacles().empty());
+    CHECK_FALSE(dinogame.is_started());
+    CHECK(dinogame.dino().y == 24);
+    CHECK_FALSE(dinogame.is_jumping());
 }

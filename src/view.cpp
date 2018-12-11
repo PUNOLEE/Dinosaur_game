@@ -17,7 +17,7 @@ Dimensions View::screen_dimensions() const
     return {800, 200};
 }
 
-void View::draw(Sprite_set &sprites, bool onkeydown_)
+void View::draw(Sprite_set &sprites)
 {
 
     rtsprite.reconfigure(Text_sprite::Builder(sans_).color(Color::medium_red())
@@ -91,7 +91,4 @@ void View::draw(Sprite_set &sprites, bool onkeydown_)
         sprites.add_sprite(text_game_over, Position(300, 100));
         sprites.add_sprite(startover, Position(500, 100));
     }
-    //    if (onkeydown_){
-    //
-    //    }
 }

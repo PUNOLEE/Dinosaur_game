@@ -15,7 +15,7 @@ public:
   explicit View(Model const &);
 
   /// Renders the current state of the model.
-  void draw(Sprite_set &, bool);
+  void draw(Sprite_set &);
 
   /// The actual screen dimensions of the required game window.
   Dimensions screen_dimensions() const;

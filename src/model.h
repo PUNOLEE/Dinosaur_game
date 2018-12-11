@@ -91,16 +91,35 @@ class Model
     /// Set status to be hitted
     void set_hitted(bool);
 
-    ///Compare the dinosaur 's position and current obstacle' s position
+    /// Compare the dinosaur's position and current obstacle's position
     /// **PRECONDITIONS**:
-    /// -- Two vectors should not be empty;
+    /// -- Two vectors should not be empty; /// Com
     bool boxcompare(vector<int>, vector<int>) const;
+
+    /// Return whether the dinosaur hits the coin
+    /// **PRECONDITIONS**:
+    /// -tree_obstacles should exist
+    bool is_hit_coin(tree_obstacles_) const;
 
     double running_dis() const { return running_distance_; };
 
     double running_time() const { return running_time_; };
 
     int coin_num() const { return coin_num_; };
+
+    double speed() const { return speed_; }
+
+    double jump_velocity() const { return jump_velocity_; };
+
+    /// Set the dinosaur's position
+    void set_dino_pos(int xPos, int yPos)
+    {
+        dino_.x = xPos;
+        dino_.y = yPos;
+    };
+
+    /// Increase the number of coin
+    void increaseCoin(tree_obstacles_ &);
 
   private:
     // Dimension width
@@ -216,6 +235,9 @@ class Model
 
     /// Reset the jumping status to running status
     void reset();
+
+    /// Increase the number of coins
+    void increaseCoin_(tree_obstacles_ &);
 
     /// Clean all vectors when game starts over
     void cleanVectors();

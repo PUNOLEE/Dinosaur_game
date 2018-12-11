@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace ge211;
 
-Controller::Controller(Position pos) : model_(pos), view_(model_), onkeydown_(false)
+Controller::Controller(Position pos) : model_(pos), view_(model_)
 {
 }
 string Controller::initial_window_title() const
@@ -43,13 +43,6 @@ void Controller::on_key_down(Key key)
 
         model_.start_over();
     }
-
-    //    if (model_.is_started()&&!model_.is_hitted()){
-    //
-    //        if (model_.is_jumping())
-    //            model_.setSpeedDrop(true);
-    //
-    //    }
 }
 
 void Controller::on_key_up(Key key)
@@ -77,7 +70,7 @@ void Controller::on_key_up(Key key)
 
 void Controller::draw(Sprite_set &set)
 {
-    view_.draw(set, onkeydown_);
+    view_.draw(set);
 }
 
 void Controller::on_start()

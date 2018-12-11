@@ -272,7 +272,7 @@ bool Model::checkForCollision()
     {
         if (dino_.y == 80)
         {
-            if (dino_.x == f_ob.x)
+            if (dino_.x == f_ob.x + 10)
             {
                 crashed = true;
             }
@@ -282,7 +282,7 @@ bool Model::checkForCollision()
             return crashed;
     }
 
-    for (auto g_ob : ground_obstacles_)
+    for (auto &g_ob : ground_obstacles_)
     {
         vector<int> obstaclebox = {
             g_ob.pos.x,
@@ -294,10 +294,8 @@ bool Model::checkForCollision()
 
         if (crashed)
             break;
-        else if (is_hit_coin_(g_ob))
-        {
-            coin_num_++;
-        }
+        else
+            increaseCoin_(g_ob);
     }
     return crashed;
 }
@@ -362,6 +360,26 @@ bool Model::is_hit_coin_(tree_obstacles_ ob) const
     return ob.hascoin_ && dino_.x == ob.pos.x + gap;
 }
 
+bool Model::is_hit_coin(tree_obstacles_ ob) const
+{
+    int gap = 0;
+    switch (ob.tree_size_)
+    {
+    case 1:
+        gap = 0;
+        break;
+    case 2:
+        gap = 15;
+        break;
+    case 3:
+        gap = 25;
+        break;
+    default:
+        break;
+    }
+    return ob.hascoin_ && dino_.x == ob.pos.x + gap;
+}
+
 bool Model::is_started() const
 {
     return started;
@@ -396,4 +414,24 @@ void Model::increaseAll(double last_frame_seconds)
 void Model::set_hitted(bool b)
 {
     hitted = b;
+}
+
+void Model::increaseCoin_(tree_obstacles_ &g_ob)
+{
+
+    if (is_hit_coin_(g_ob))
+    {
+        coin_num_++;
+        g_ob.hascoin_ = false;
+    }
+}
+
+void Model::increaseCoin(tree_obstacles_ &g_ob)
+{
+
+    if (is_hit_coin_(g_ob))
+    {
+        coin_num_++;
+        g_ob.hascoin_ = false;
+    }
 }
