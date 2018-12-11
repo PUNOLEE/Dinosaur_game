@@ -91,11 +91,10 @@ class Model
     /// Set status to be hitted
     void set_hitted(bool);
 
-    pare the dinosaur 's position and current obstacle' s position
-        /// **PRECONDITIONS**:
-        /// -- Two vectors should not be empty; /// Com
-        bool
-        boxcompare(vector<int>, vector<int>) const;
+    ///Compare the dinosaur 's position and current obstacle' s position
+    /// **PRECONDITIONS**:
+    /// -- Two vectors should not be empty; /// Com
+    bool boxcompare(vector<int>, vector<int>) const;
 
     double running_dis() const { return running_distance_; };
 
