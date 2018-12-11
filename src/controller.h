@@ -31,7 +31,9 @@ private:
   Model model_;
   View view_;
 
+  // Game duration;
   double dur_;
 
+  // whether user hits a key
   bool onkeydown_;
 };

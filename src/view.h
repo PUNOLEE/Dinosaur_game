@@ -24,8 +24,10 @@ private:
   /// The model.
   Model const &model_;
 
+  /// resources path
   string path_ = "../../../../resource/";
 
+  /// font
   Font const sans_{path_ + "slkscr.ttf", 22};
 
   /// The sprites.
@@ -47,10 +49,10 @@ private:
   Image_sprite const ground{path_ + "1x-horizon.png"};
   // start over:
   Image_sprite const startover{path_ + "1x-restart-1.png"};
-
+  // running time
   Text_sprite rtsprite;
-
+  // running distance
   Text_sprite rdsprite;
-
+  // coin nums
   Text_sprite cnsprite;
 };
