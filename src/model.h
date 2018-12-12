@@ -158,9 +158,6 @@ class Model
     // Drop velocity
     double DROP_VELOCITY_ = -3.0;
 
-    // Speed drop coefficient
-    double SPEED_DROP_COEFFICIENT = 12.0;
-
     // Gravity
     double GRAVITY = 1;
 

@@ -47,14 +47,8 @@ void Model::updateJump(double last_frame_seconds)
 
     double frameElapsed = deltatime / msPerFrame;
 
-    if (speedDrop)
+    if (!speedDrop)
     {
-
-        dino_.y -= lround(jump_velocity_ * SPEED_DROP_COEFFICIENT * frameElapsed);
-    }
-    else
-    {
-
         dino_.y -= lround(jump_velocity_ * frameElapsed);
     }
 

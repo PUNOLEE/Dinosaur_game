@@ -42,13 +42,6 @@ void Controller::on_key_down(Key key)
 
         model_.start_over();
     }
-
-    //    if (model_.is_started()&&!model_.is_hitted()){
-    //
-    //        if (model_.is_jumping())
-    //            model_.setSpeedDrop(true);
-    //
-    //    }
 }
 
 void Controller::on_key_up(Key key)
