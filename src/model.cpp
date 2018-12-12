@@ -219,8 +219,6 @@ void Model::anim_flying_obs_per_frame(double deltatime)
 void Model::setSpeedDrop(bool b)
 {
     speedDrop = b;
-    if (b)
-        jump_velocity_ = 1.0;
 }
 
 void Model::game_over()
@@ -266,7 +264,7 @@ bool Model::checkForCollision()
     {
         if (dino_.y == 80)
         {
-            if (dino_.x == f_ob.x + 10)
+            if (dino_.x >= f_ob.x && dino_.x < f_ob.x + 30)
             {
                 crashed = true;
             }
