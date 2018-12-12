@@ -22,7 +22,6 @@ Dimensions Controller::initial_window_dimensions() const
 void Controller::on_key_down(Key key)
 {
 
-    onkeydown_ = true;
     if (!model_.is_started() && key == Key::code(13))
     {
 
@@ -43,6 +42,13 @@ void Controller::on_key_down(Key key)
 
         model_.start_over();
     }
+
+    //    if (model_.is_started()&&!model_.is_hitted()){
+    //
+    //        if (model_.is_jumping())
+    //            model_.setSpeedDrop(true);
+    //
+    //    }
 }
 
 void Controller::on_key_up(Key key)
@@ -65,7 +71,6 @@ void Controller::on_key_up(Key key)
             model_.start_over();
         }
     }
-    onkeydown_ = false;
 }
 
 void Controller::draw(Sprite_set &set)

@@ -24,6 +24,10 @@ private:
   /// The model.
   Model const &model_;
 
+  /// Dimension:
+  int WIDTH = 800;
+  int HEIGHT = 200;
+
   /// resources path
   string path_ = "../../../../resource/";
 

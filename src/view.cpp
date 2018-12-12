@@ -14,7 +14,7 @@ View::View(Model const &model) : model_(model)
 
 Dimensions View::screen_dimensions() const
 {
-    return {800, 200};
+    return {WIDTH, HEIGHT};
 }
 
 void View::draw(Sprite_set &sprites)
@@ -33,16 +33,16 @@ void View::draw(Sprite_set &sprites)
 
     sprites.add_sprite(cnsprite, {355, 10});
 
-    sprites.add_sprite(rdsprite, {700, 10});
+    sprites.add_sprite(rdsprite, {WIDTH - 100, 10});
 
-    sprites.add_sprite(ground, Position(0, 188));
+    sprites.add_sprite(ground, Position(0, HEIGHT - 12));
 
     for (int i = 0; i < 6; i++)
     {
         sprites.add_sprite(cloud, Position(30 + 150 * i, 0));
     }
 
-    sprites.add_sprite(dino, {model_.dino().x, 196 - model_.dino().y * 2});
+    sprites.add_sprite(dino, {model_.dino().x, HEIGHT - 4 - model_.dino().y * 2});
 
     if (!model_.ground_obstacles().empty())
     {
@@ -56,17 +56,17 @@ void View::draw(Sprite_set &sprites)
                 case 1:
                     if (itr.hascoin_)
                         sprites.add_sprite(coin, {itr.pos.x, 90});
-                    sprites.add_sprite(one_ob, {itr.pos.x, 146});
+                    sprites.add_sprite(one_ob, {itr.pos.x, HEIGHT - 50 - 4});
                     break;
                 case 2:
                     if (itr.hascoin_)
                         sprites.add_sprite(coin, {itr.pos.x + 15, 90});
-                    sprites.add_sprite(two_ob, {itr.pos.x, 146});
+                    sprites.add_sprite(two_ob, {itr.pos.x, HEIGHT - 50 - 4});
                     break;
                 case 3:
                     if (itr.hascoin_)
                         sprites.add_sprite(coin, {itr.pos.x + 25, 90});
-                    sprites.add_sprite(three_ob, {itr.pos.x, 146});
+                    sprites.add_sprite(three_ob, {itr.pos.x, HEIGHT - 50 - 4});
                     break;
                 default:
                     break;
